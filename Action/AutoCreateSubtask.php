@@ -1,3 +1,4 @@
+
 <?php
 
 namespace Kanboard\Plugin\AutomaticAction\Action;
@@ -28,6 +29,8 @@ class AutoCreateSubtask extends Base
             'column_id' => t('Column'),
             'user_id' => t('Assignee'),
             'title' => t('SubTitle'),
+	    'time_estimated' => t('Estimated Time in Hours'),                                                                  
+            'duration' => t('Duration in days'), 
         );
     }
 
@@ -51,6 +54,7 @@ class AutoCreateSubtask extends Base
             'time_estimated' => $this->getParam('time_estimated'),
             'time_spent' => 0,
             'status' => 0,
+            'due_date' => strtotime('+'.$this->getParam('duration').'days'),                                          
         );
        return $this->subtaskModel->create($values);
     }
