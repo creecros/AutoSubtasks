@@ -28,7 +28,7 @@ class AutoCreateSubtask extends Base
         return array(
             'column_id' => t('Column'),
             'user_id' => t('Assignee'),
-            'title' => t('SubTitle'),
+            'title' => t('Subtask Title'),
 	    'time_estimated' => t('Estimated Time in Hours'),                                                                  
             'duration' => t('Duration in days'), 
         );
