@@ -18,7 +18,7 @@ class AutoCreateSubtask extends Base
     {
 
         return array(
-	    TaskModel::EVENT_CREATE_UPDATE,
+	    TaskModel::EVENT_CREATE,
             TaskModel::EVENT_MOVE_COLUMN,
         );
     }
