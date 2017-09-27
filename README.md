@@ -13,3 +13,6 @@ This Automatic Action will allow you to add a subtask when the task is moved to 
 # Install
 Create a directory **AutomaticAction** under the folder **plugins**
 - Copy all source files in this new directory.
+
+# Screenshot
+![Screenshot](https://github.com/creecros/AutoSubtasks/blob/master/screenshot/image.png)
