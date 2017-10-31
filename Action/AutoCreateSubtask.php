@@ -50,7 +50,7 @@ class AutoCreateSubtask extends Base
 	 $title_test = $this->getParam('title');
 	 
 	 if (empty ($title_test)) {
-		 $title_test = $this->getParam($data['task']['title'];
+		 $title_test = $data['task']['title'];
 	  }
 	    
 	 $values = array(
