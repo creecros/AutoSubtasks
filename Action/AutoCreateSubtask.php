@@ -1,6 +1,6 @@
 <?php
 
-namespace Kanboard\Plugin\AutomaticAction\Action;
+namespace Kanboard\Plugin\AutoSubtasks\Action;
 
 use Kanboard\Model\TaskModel;
 use Kanboard\Action\Base;
