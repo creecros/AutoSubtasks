@@ -2,13 +2,13 @@
 
 
 
-namespace Kanboard\Plugin\AutomaticAction;
+namespace Kanboard\Plugin\AutoSubtasks;
 
 
 
 use Kanboard\Core\Plugin\Base;
 
-use Kanboard\Plugin\AutomaticAction\Action\AutoCreateSubtask;
+use Kanboard\Plugin\AutoSubtasks\Action\AutoCreateSubtask;
 
 
 
