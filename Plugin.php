@@ -19,7 +19,7 @@ class Plugin extends Base
 	public function initialize()
     
 	{
-        
+                $this->template->setTemplateOverride('action_creation/params', 'autosubtasks:action_creation/params');
 		$this->actionManager->register(new AutoCreateSubtask($this->container));
     
 	}
