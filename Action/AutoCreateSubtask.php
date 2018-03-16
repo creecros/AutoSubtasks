@@ -10,7 +10,7 @@ class AutoCreateSubtask extends Base
 
     public function getDescription()
     {
-        return t('Create a Subtask Automatically');
+        return t('Create Subtasks Automatically');
     }
 
     public function getCompatibleEvents()
@@ -27,7 +27,7 @@ class AutoCreateSubtask extends Base
         return array(
             'column_id' => t('Column'),
             'user_id' => t('Assignee'),
-            'title' => t('Subtask Title, leave blank to copy Task Title'),
+            'title' => t('Subtask Title(s), leave blank to copy Task Title'),
 	    'time_estimated' => t('Estimated Time in Hours'),                                                                  
             'duration' => t('Duration in days'), 
         );
@@ -62,7 +62,38 @@ class AutoCreateSubtask extends Base
             'status' => 0,
             'due_date' => strtotime('+'.$this->getParam('duration').'days'),                                          
         );
-       return $this->subtaskModel->create($values);
+	    
+// START NEW CODE COPIED FROM /app/Controller/SubtaskControlle.php line 70 - 95
+        $subtasks = explode("\r\n", isset($values['title']) ? $values['title'] : '');
+        $subtasksAdded = 0;
+
+        foreach ($subtasks as $subtask) {
+            $subtask = trim($subtask);
+
+            if (! empty($subtask)) {
+                $subtaskValues = $values;
+                $subtaskValues['title'] = $subtask;
+
+                list($valid, $errors) = $this->subtaskValidator->validateCreation($subtaskValues);
+
+                if (! $valid) {
+                    $this->create($values, $errors);
+                    return false;
+                }
+
+                if (! $this->subtaskModel->create($subtaskValues)) {
+                    $this->flash->failure(t('Unable to create your sub-task.'));
+                    $this->response->redirect($this->helper->url->to('TaskViewController', 'show', array('project_id' => $task['project_id'], 'task_id' => $task['id']), 'subtasks'), true);
+                    return false;
+                }
+
+                $subtasksAdded++;
+            }
+        }
+//END NEW CODE 
+//COMMENT OUT YOUR RETURN
+
+     //  return $this->subtaskModel->create($values);
     }
 
     public function hasRequiredCondition(array $data)
