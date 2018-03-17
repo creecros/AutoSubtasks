@@ -4,49 +4,42 @@
 
 namespace Kanboard\Plugin\AutoSubtasks;
 
-
-
 use Kanboard\Core\Plugin\Base;
-
 use Kanboard\Plugin\AutoSubtasks\Action\AutoCreateSubtask;
-
 
 
 class Plugin extends Base
 
 {
-    
-	public function initialize()
-    
-	{
-                $this->template->setTemplateOverride('action_creation/params', 'autoSubtasks:action_creation/params');
-		$this->actionManager->register(new AutoCreateSubtask($this->container));
-    
-	}
+  public function initialize()
 
-	
-	public function getPluginName()	
-	{ 		 
-		return 'Auto Subtasks'; 
-	}
+  {
+    $this->template->setTemplateOverride('action_creation/params', 'autoSubtasks:action_creation/params');
+    $this->actionManager->register(new AutoCreateSubtask($this->container));
+  }
 
-	public function getPluginAuthor() 
-	{ 	 
-		return 'Craig Crosby'; 
-	}
+  public function getPluginName()
+  {
+    return 'Auto Subtasks';
+  }
 
-	public function getPluginVersion() 
-	{ 	 
-		return '0.0.1'; 
-	}
+  public function getPluginAuthor()
+  {
+    return 'Craig Crosby';
+  }
 
-	public function getPluginDescription() 
-	{ 
-		return 'Adding automatic actions for subtasks'; 
-	}
+  public function getPluginVersion()
+  {
+    return '0.0.1';
+  }
+  
+  public function getPluginDescription()
+  {
+    return 'Adding automatic actions for subtasks';
+  }
 
-	public function getPluginHomepage() 
-	{ 	 
-		return 'https://github.com/creecros/AutoSubtasks'; 
-	}
+  public function getPluginHomepage()
+  {
+    return 'https://github.com/creecros/AutoSubtasks';
+  }
 }
