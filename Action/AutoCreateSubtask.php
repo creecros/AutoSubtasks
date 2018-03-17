@@ -28,7 +28,7 @@ class AutoCreateSubtask extends Base
     return array(
       'column_id' => t('Column'),
       'user_id' => t('Assignee'),
-      'multitasktitles' => t('Subtask Title(s). Leave blank to copy Task Title and create only one subtask'),
+      'multitasktitles' => t('Subtask Title(s)'),
       'time_estimated' => t('Estimated Time in Hours'),
       'duration' => t('Duration in days'),
     );
@@ -87,11 +87,11 @@ class AutoCreateSubtask extends Base
           $this->response->redirect($this->helper->url->to('TaskViewController', 'show', array('project_id' => $task['project_id'], 'task_id' => $task['id']), 'subtasks'), true);
           return false;
         }
-        
+
         $subtasksAdded++;
       }
     }
-    //restore the messaging with a flash
+    //restore the messaging with a flash but this message doesn't seem to appear in the flash area. Only the create message from (kanboard/app/Controller/ActionCreationController.php). 
     if ($subtasksAdded > 0) {
       if ($subtasksAdded === 1) {
         $this->flash->success(t('Subtask added successfully.'));

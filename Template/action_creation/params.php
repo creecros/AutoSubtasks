@@ -48,6 +48,9 @@
         <?php elseif ($this->text->contains($param_name, 'multitasktitles')): ?>
             <?= $this->form->label($param_desc, $param_name) ?>
             <?= $this->form->textarea('params['.$param_name.']', $values) ?>
+            <div class="form-help">
+            <?= t('Enter one line per task, or leave blank to copy Task Title and create only one subtask.') ?>
+            </div>
         <?php else: ?>
             <?= $this->form->label($param_desc, $param_name) ?>
             <?= $this->form->text('params['.$param_name.']', $values) ?>
