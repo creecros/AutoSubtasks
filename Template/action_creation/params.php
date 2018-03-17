@@ -45,7 +45,7 @@
         <?php elseif (is_array($param_desc)): ?>
             <?= $this->form->label(ucfirst($param_name), $param_name) ?>
             <?= $this->form->select('params['.$param_name.']', $param_desc, $values) ?>
-        <?php elseif ($this->text->contains($param_name, 'title') && (stripos($param_desc,'Subtask Title(s)') !== false)) : ?>
+        <?php elseif ($this->text->contains($param_name, 'multitasktitles')): ?>
             <?= $this->form->label($param_desc, $param_name) ?>
             <?= $this->form->textarea('params['.$param_name.']', $values) ?>
         <?php else: ?>
