@@ -10,7 +10,7 @@ class AutoCreateSubtask extends Base
 
     public function getDescription()
     {
-        return t('Create Subtasks Automatically');
+    return t('Create one or more Subtasks Automatically');
     }
 
     public function getCompatibleEvents()
@@ -24,12 +24,13 @@ class AutoCreateSubtask extends Base
 
     public function getActionRequiredParameters()
     {
+    //changed 'titles' to 'multitasktitles' to have a clean way to render the title-textfield as a textarea
         return array(
             'column_id' => t('Column'),
             'user_id' => t('Assignee'),
-            'title' => t('Subtask Title(s), leave blank to copy Task Title'),
-	    'time_estimated' => t('Estimated Time in Hours'),                                                                  
-            'duration' => t('Duration in days'), 
+      'multitasktitles' => t('Subtask Title(s). Leave blank to copy Task Title and create only one subtask'),
+	    'time_estimated' => t('Estimated Time in Hours'),
+            'duration' => t('Duration in days'),
         );
     }
 
@@ -40,19 +41,20 @@ class AutoCreateSubtask extends Base
 	    'task' => array(
                 'project_id',
                 'column_id',
-		'title',    
+		'title',
             ),
         );
     }
 
     public function doAction(array $data)
     {
-	 $title_test = $this->getParam('title');
-	 
+   //get the value of 'multitasktitles' in stead of the original 'titles'
+	 $title_test = $this->getParam('multitasktitles');
+
 	 if (empty ($title_test)) {
 		 $title_test = $data['task']['title'];
 	  }
-	    
+
 	 $values = array(
             'title' => $title_test,
             'task_id' => $data['task_id'],
@@ -60,10 +62,9 @@ class AutoCreateSubtask extends Base
             'time_estimated' => $this->getParam('time_estimated'),
             'time_spent' => 0,
             'status' => 0,
-            'due_date' => strtotime('+'.$this->getParam('duration').'days'),                                          
+            'due_date' => strtotime('+'.$this->getParam('duration').'days'),
         );
-	    
-// START NEW CODE COPIED FROM /app/Controller/SubtaskControlle.php line 70 - 95
+
         $subtasks = explode("\r\n", isset($values['title']) ? $values['title'] : '');
         $subtasksAdded = 0;
 
@@ -90,10 +91,15 @@ class AutoCreateSubtask extends Base
                 $subtasksAdded++;
             }
         }
-//END NEW CODE 
-//COMMENT OUT YOUR RETURN
+        //restore the messaging with a flash
+        if ($subtasksAdded > 0) {
+          if ($subtasksAdded === 1) {
+            $this->flash->success(t('Subtask added successfully.'));
+          } else {
+            $this->flash->success(t('%d subtasks added successfully.', $subtasksAdded));
+          }
+        }
 
-     //  return $this->subtaskModel->create($values);
     }
 
     public function hasRequiredCondition(array $data)
