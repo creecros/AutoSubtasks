@@ -50,9 +50,13 @@ class AutoCreateSubtask extends Base
   {
     //get the value of 'multitasktitles' in stead of the original 'titles'
     $title_test = $this->getParam('multitasktitles');
-
-    if (empty ($title_test)) {
-      $title_test = $data['task']['title'];
+    $x = 0;
+    
+    foreach ($taskname as $title_test) {
+      if (empty ($title_test)) {
+        $title_test['x'] = $data['task']['title'];
+      }
+     $x++;
     }
 
     $values = array(
