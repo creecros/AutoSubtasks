@@ -55,7 +55,7 @@ class AutoCreateSubtask extends Base
     
     foreach ($mass_explosion as $taskname) {
       if (empty ($taskname)) {
-        $title_test['x'] = $data['task']['title'];
+        $title_test['taskname'] = $data['task']['title'];
       }
      $x++;
     }
