@@ -51,7 +51,7 @@ class AutoCreateSubtask extends Base
     //get the value of 'multitasktitles' in stead of the original 'titles'
     $title_test = $this->getParam('multitasktitles');
     $x = 0;
-    $title_test = preg_replace("/(^[\r\n]*|[\r\n]+)[\s\t]*[\r\n]+/", $data['task']['title'] & "\n", $title_test);
+    $title_test = preg_replace("/^\s+/m", $data['task']['title'] . "\r\n", $title_test);
 
     $values = array(
       'title' => $title_test,
