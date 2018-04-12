@@ -101,8 +101,8 @@ class AutoCreateSubtask extends Base
 
   public function hasRequiredCondition(array $data)
   {
-    if ($this->getParam(check_box') === 1) {
-    return true;
+    if ($this->getParam('check_box') === 1) {
+    return $data['task']['column_id'] == $data['task']['column_id'];
     } else {
     return $data['task']['column_id'] == $this->getParam('column_id');
     }
