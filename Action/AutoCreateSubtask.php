@@ -31,6 +31,7 @@ class AutoCreateSubtask extends Base
       'multitasktitles' => t('Subtask Title(s)'),
       'time_estimated' => t('Estimated Time in Hours'),
       'duration' => t('Duration in days'),
+      'check_box' => t('Apply to all Columns'),
     );
   }
 
