@@ -22,7 +22,7 @@
             <?= $this->form->label($param_desc, $param_name) ?>
             <?= $this->form->select('params['.$param_name.']', $users_list, $values) ?>
         <?php elseif ($this->text->contains($param_name, 'check_box')): ?>
-            <?= $this->form->label($param_desc, $param_name) ?>
+            <?= $this->form->label(t('Options'), $param_name) ?>
             <?= $this->form->checkbox('params['.$param_name.']', $param_desc, 1) ?>    
         <?php elseif ($this->text->contains($param_name, 'project_id')): ?>
             <?= $this->form->label($param_desc, $param_name) ?>
