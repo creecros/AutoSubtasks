@@ -42,4 +42,9 @@ class Plugin extends Base
   {
     return 'https://github.com/creecros/AutoSubtasks';
   }
+  
+  public function getCompatibleVersion()
+  {
+    return '>=1.0.48';
+  }
 }
