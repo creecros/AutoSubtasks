@@ -20,7 +20,7 @@ class Plugin extends Base
 
   public function getPluginName()
   {
-    return 'Auto Subtasks';
+    return 'Auto Subtask Creation';
   }
 
   public function getPluginAuthor()
