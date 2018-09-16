@@ -21,6 +21,15 @@
         <?php elseif ($this->text->contains($param_name, 'user_id')): ?>
             <?= $this->form->label($param_desc, $param_name) ?>
             <?= $this->form->select('params['.$param_name.']', $users_list, $values) ?>
+        <?php elseif ($this->text->contains($param_name, 'group_id')): ?>
+           <?php $groups = $this->model->projectGroupRoleModel->getGroups($values['project_id']); ?>
+           <?php $groupnames = array_column($groups, 'name'); ?>
+           <?php $groupids = array_column($groups, 'id'); ?>
+           <?php array_unshift($groupnames, t('Unassigned')); ?>
+           <?php array_unshift($groupids, 0); ?>
+           <?php $groupvalues = array_combine($groupids, $groupnames); ?>
+            <?= $this->form->label($param_desc, $param_name) ?>
+            <?= $this->form->select('params['.$param_name.']', $groupvalues, $values) ?>
         <?php elseif ($this->text->contains($param_name, 'check_box')): ?>
             <?= $this->form->label(t('Options'), $param_name) ?>
             <?= $this->form->checkbox('params['.$param_name.']', $param_desc, 1) ?>    
