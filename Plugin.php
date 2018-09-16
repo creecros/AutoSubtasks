@@ -30,7 +30,7 @@ class Plugin extends Base
 
   public function getPluginVersion()
   {
-    return '0.0.2';
+    return '0.0.3';
   }
   
   public function getPluginDescription()
