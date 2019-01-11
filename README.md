@@ -10,7 +10,7 @@ This Automatic Action will allow you to add a subtask when the task is moved to 
 - Previous requirement to install [Subtaskdate](https://github.com/eSkiSo/Subtaskdate) plugin, has been removed.
 
 # Install
-Create a directory **AutomaticAction** under the folder **plugins**
+Create a directory **AutoSubtasks** under the folder **plugins**
 - Copy all source files in this new directory.
 
 # Screenshot
