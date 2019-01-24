@@ -31,7 +31,8 @@ class AutoCreateSubtask extends Base
       'multitasktitles' => t('Subtask Title(s)'),
       'time_estimated' => t('Estimated Time in Hours'),
       'duration' => t('Duration in days'),
-      'check_box' => t('Apply to all Columns'),
+      'check_box_all_columns' => t('Apply to all Columns'),
+      'check_box_no_duplicates' => t('Do not duplicate subtasks'),
     );
   }
 
@@ -63,11 +64,20 @@ class AutoCreateSubtask extends Base
       'due_date' => strtotime('+'.$this->getParam('duration').'days'),
     );
 
-    $subtasks = explode("\r\n", isset($values['title']) ? $values['title'] : '');
+    $subtasks = array_map('trim', explode("\r\n", isset($values['title']) ? $values['title'] : ''));
     $subtasksAdded = 0;
+    
+    if ($this->getParam('check_box_no_duplicates') == true ){
+      $current_subtasks = $this->subtaskModel->getAll($data['task_id']);
+      foreach ($current_subtasks as $current_subtask) {
+        if (in_array($current_subtask['title'], $subtasks)) {
+          $title = array_search($current_subtask['title'], $subtasks);
+          unset($subtasks[$title]);
+        }
+      }
+    }
 
     foreach ($subtasks as $subtask) {
-      $subtask = trim($subtask);
 
       if (! empty($subtask)) {
         $subtaskValues = $values;
@@ -102,7 +112,7 @@ class AutoCreateSubtask extends Base
   public function hasRequiredCondition(array $data)
   {
     
-    if ($this->getParam('check_box')) {
+    if ($this->getParam('check_box_all_columns')) {
     return $data['task']['column_id'] == $data['task']['column_id'];
     } else {
     return $data['task']['column_id'] == $this->getParam('column_id');
