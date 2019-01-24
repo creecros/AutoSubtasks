@@ -31,6 +31,7 @@ class AutoCreateSubtaskVanilla extends Base
       'multitasktitles' => t('Subtask Title(s)'),
       'time_estimated' => t('Estimated Time in Hours'),
       'check_box' => t('Apply to all Columns'),
+      'duplicate' => t('Do not duplicate subtasks'),
     );
   }
 
@@ -61,11 +62,20 @@ class AutoCreateSubtaskVanilla extends Base
       'status' => 0,
     );
 
-    $subtasks = explode("\r\n", isset($values['title']) ? $values['title'] : '');
+    $subtasks = array_map('trim', explode("\r\n", isset($values['title']) ? $values['title'] : ''));
     $subtasksAdded = 0;
+    
+    if ($this->getParam('duplicate') == true ){
+      $current_subtasks = $this->subtaskModel->getAll($data['task_id']);
+      foreach ($current_subtasks as $current_subtask) {
+        if (in_array($current_subtask['title'], $subtasks)) {
+          $title = array_search($current_subtask['title'], $subtasks);
+          unset($subtasks[$title]);
+        }
+      }
+    }
 
     foreach ($subtasks as $subtask) {
-      $subtask = trim($subtask);
 
       if (! empty($subtask)) {
         $subtaskValues = $values;
