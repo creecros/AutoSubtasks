@@ -30,8 +30,8 @@ class AutoCreateSubtaskVanilla extends Base
       'user_id' => t('Assignee'),
       'multitasktitles' => t('Subtask Title(s)'),
       'time_estimated' => t('Estimated Time in Hours'),
-      'check_box' => t('Apply to all Columns'),
-      'duplicate' => t('Do not duplicate subtasks'),
+      'check_box_all_columns' => t('Apply to all Columns'),
+      'check_box_no_duplicates' => t('Do not duplicate subtasks'),
     );
   }
 
@@ -65,7 +65,7 @@ class AutoCreateSubtaskVanilla extends Base
     $subtasks = array_map('trim', explode("\r\n", isset($values['title']) ? $values['title'] : ''));
     $subtasksAdded = 0;
     
-    if ($this->getParam('duplicate') == true ){
+    if ($this->getParam('check_box_no_duplicates') == true ){
       $current_subtasks = $this->subtaskModel->getAll($data['task_id']);
       foreach ($current_subtasks as $current_subtask) {
         if (in_array($current_subtask['title'], $subtasks)) {
@@ -110,7 +110,7 @@ class AutoCreateSubtaskVanilla extends Base
   public function hasRequiredCondition(array $data)
   {
     
-    if ($this->getParam('check_box')) {
+    if ($this->getParam('check_box_all_columns')) {
     return $data['task']['column_id'] == $data['task']['column_id'];
     } else {
     return $data['task']['column_id'] == $this->getParam('column_id');
