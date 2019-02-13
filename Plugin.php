@@ -1,12 +1,12 @@
 <?php
 
-
-
 namespace Kanboard\Plugin\AutoSubtasks;
 
 use Kanboard\Core\Plugin\Base;
 use Kanboard\Plugin\AutoSubtasks\Action\AutoCreateSubtask;
 use Kanboard\Plugin\AutoSubtasks\Action\AutoCreateSubtaskVanilla;
+use Kanboard\Plugin\AutoSubtasks\Action\CategoryAutoSubtask;
+use Kanboard\Plugin\AutoSubtasks\Action\CategoryAutoSubtaskVanilla;
 
 class Plugin extends Base
 
@@ -18,8 +18,10 @@ class Plugin extends Base
     
     if (file_exists('plugins/Subtaskdate')) {
       $this->actionManager->register(new AutoCreateSubtask($this->container));
+      $this->actionManager->register(new CategoryAutoSubtask($this->container));
     } else {
       $this->actionManager->register(new AutoCreateSubtaskVanilla($this->container));
+      $this->actionManager->register(new CategoryAutoSubtaskVanilla($this->container));
     }
     
   }
@@ -36,7 +38,7 @@ class Plugin extends Base
 
   public function getPluginVersion()
   {
-    return '2.0.0';
+    return '2.1.0';
   }
   
   public function getPluginDescription()
