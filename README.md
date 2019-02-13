@@ -9,8 +9,9 @@
 
 # AutoSubtasks
 - Kanboard Plugin to create Automatic Actions for subtasks.
-  - This Automatic Action will allow you to add a subtask when the task is moved to another column or upon Task creation within a column. 
-  - Works with [Subtaskdate](https://github.com/eSkiSo/Subtaskdate) plugin, or without.
+  1. Automatic Action will allow you to add a subtask when the task is moved to another column or upon Task creation within a column. 
+  2. Automatic Action will allow you to add a subtask when the tasks category changes.
+- Works with [Subtaskdate](https://github.com/eSkiSo/Subtaskdate) plugin, or without.
 
 # Requirements
 - Kanboard >=1.0.48
