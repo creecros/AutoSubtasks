@@ -5,7 +5,7 @@ namespace Kanboard\Plugin\AutoSubtasks\Action;
 use Kanboard\Model\TaskModel;
 use Kanboard\Action\Base;
 
-class AutoCreateSubtaskVanilla extends Base
+class CategoryAutoSubtaskVanilla extends Base
 {
 
   public function getDescription()
