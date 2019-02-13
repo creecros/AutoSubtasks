@@ -5,20 +5,19 @@ namespace Kanboard\Plugin\AutoSubtasks\Action;
 use Kanboard\Model\TaskModel;
 use Kanboard\Action\Base;
 
-class AutoCreateSubtaskVanilla extends Base
+class CategoryAutoSubtask extends Base
 {
 
   public function getDescription()
   {
-    return t('Create one or more Subtasks Automatically based on column');
+    return t('Create one or more Subtasks Automatically based on a category');
   }
 
   public function getCompatibleEvents()
   {
 
     return array(
-      TaskModel::EVENT_CREATE,
-      TaskModel::EVENT_MOVE_COLUMN,
+      TaskModel::EVENT_CREATE_UPDATE,
     );
   }
 
@@ -26,11 +25,11 @@ class AutoCreateSubtaskVanilla extends Base
   {
     //changed 'titles' to 'multitasktitles' to have a clean way to render the title-textfield as a textarea
     return array(
-      'column_id' => t('Column'),
+      'category_id' => t('Category'),
       'user_id' => t('Assignee'),
       'multitasktitles' => t('Subtask Title(s)'),
       'time_estimated' => t('Estimated Time in Hours'),
-      'check_box_all_columns' => t('Apply to all Columns'),
+      'duration' => t('Duration in days'),
       'check_box_no_duplicates' => t('Do not duplicate subtasks'),
     );
   }
@@ -41,7 +40,7 @@ class AutoCreateSubtaskVanilla extends Base
       'task_id',
       'task' => array(
         'project_id',
-        'column_id',
+        'category_id',
         'title',
       ),
     );
@@ -60,6 +59,7 @@ class AutoCreateSubtaskVanilla extends Base
       'time_estimated' => $this->getParam('time_estimated'),
       'time_spent' => 0,
       'status' => 0,
+      'due_date' => strtotime('+'.$this->getParam('duration').'days'),
     );
 
     $subtasks = array_map('trim', explode("\r\n", isset($values['title']) ? $values['title'] : ''));
@@ -109,11 +109,6 @@ class AutoCreateSubtaskVanilla extends Base
 
   public function hasRequiredCondition(array $data)
   {
-    
-    if ($this->getParam('check_box_all_columns')) {
-    return $data['task']['column_id'] == $data['task']['column_id'];
-    } else {
-    return $data['task']['column_id'] == $this->getParam('column_id');
-    }
+        return $data['task']['category_id'] == $this->getParam('category_id');
   }
 }

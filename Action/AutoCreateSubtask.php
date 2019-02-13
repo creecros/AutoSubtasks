@@ -10,7 +10,7 @@ class AutoCreateSubtask extends Base
 
   public function getDescription()
   {
-    return t('Create one or more Subtasks Automatically');
+    return t('Create one or more Subtasks Automatically based on column');
   }
 
   public function getCompatibleEvents()
