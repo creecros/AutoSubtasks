@@ -7,7 +7,7 @@ return array(
     'Subtask Title(s)' => 'Titel der Teilaufgabe(n)',
     'Estimated Time in Hours' => 'Erwartete Zeit in Stunden',
     'Duration in days' => 'Dauer in Tagen',
-    'Enter one line per task, or leave blank to copy Task Title and create only one subtask.' => 'Geben Sie eine Teilaufgabe pro Zeile ein, oder ...',
+    'Enter one line per task, or leave blank to copy Task Title and create only one subtask.' => 'Geben Sie eine Teilaufgabe pro Zeile ein, oder lassen Sie das Feld leer, um den Aufgabetitel zu kopieren und nur eine Teilaufgabe zu erstellen.',
     'Options' => 'Optionen',
     'Apply to all Columns' => 'Auf alle Spalten anwenden',
     'Do not duplicate subtasks' => 'Teilaufgaben nicht duplizieren'
