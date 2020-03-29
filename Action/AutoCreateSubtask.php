@@ -66,7 +66,7 @@ class AutoCreateSubtask extends Base
 
     $subtasks = array_map('trim', explode("\r\n", isset($values['title']) ? $values['title'] : ''));
     $subtasksAdded = 0;
-    
+
     if ($this->getParam('check_box_no_duplicates') == true ){
       $current_subtasks = $this->subtaskModel->getAll($data['task_id']);
       foreach ($current_subtasks as $current_subtask) {
@@ -81,7 +81,22 @@ class AutoCreateSubtask extends Base
 
       if (! empty($subtask)) {
         $subtaskValues = $values;
-        $subtaskValues['title'] = $subtask;
+
+        // *** Parsing for "magical" parameters ... enabling separate values for each subtask ***
+        // Extract subtask-title by ignoring all "magical" parameters
+        $subtaskValues['title'] = preg_replace('~.*?}~', '', $subtask);
+
+        // Extracting optional assignee for this subtask ELSE assignee from form will be used
+        $magic_user_id_exists = preg_match('/{u:(.*?)}/', $subtask, $magic_user_id);
+        $subtaskValues['user_id'] = ($magic_user_id_exists) ? $magic_user_id[1] : $subtaskValues['user_id'];
+
+        // Extracting optional estimated hours for this subtask ELSE estimated hours from form will be used
+        $magic_time_exists = preg_match('/{h:(.*?)}/', $subtask, $magic_time);
+        $subtaskValues['time_estimated'] = ($magic_time_exists) ? $magic_time[1] : $subtaskValues['time_estimated'];
+
+        // Extracting optional due date for this subtask ELSE due date from form will be used
+        $magic_days_exist = preg_match('/{d:(.*?)}/', $subtask, $magic_days);
+        $subtaskValues['due_date'] = ($magic_days_exist) ? strtotime('+'.$magic_days[1].'days') : $subtaskValues['due_date'];
 
         list($valid, $errors) = $this->subtaskValidator->validateCreation($subtaskValues);
 
@@ -99,7 +114,7 @@ class AutoCreateSubtask extends Base
         $subtasksAdded++;
       }
     }
-    //restore the messaging with a flash but this message doesn't seem to appear in the flash area. Only the create message from (kanboard/app/Controller/ActionCreationController.php). 
+    //restore the messaging with a flash but this message doesn't seem to appear in the flash area. Only the create message from (kanboard/app/Controller/ActionCreationController.php).
     if ($subtasksAdded > 0) {
       if ($subtasksAdded === 1) {
         $this->flash->success(t('Subtask added successfully.'));
@@ -111,7 +126,7 @@ class AutoCreateSubtask extends Base
 
   public function hasRequiredCondition(array $data)
   {
-    
+
     if ($this->getParam('check_box_all_columns')) {
     return $data['task']['column_id'] == $data['task']['column_id'];
     } else {

@@ -62,7 +62,7 @@ class CategoryAutoSubtaskVanilla extends Base
 
     $subtasks = array_map('trim', explode("\r\n", isset($values['title']) ? $values['title'] : ''));
     $subtasksAdded = 0;
-    
+
     if ($this->getParam('check_box_no_duplicates') == true ){
       $current_subtasks = $this->subtaskModel->getAll($data['task_id']);
       foreach ($current_subtasks as $current_subtask) {
@@ -77,7 +77,18 @@ class CategoryAutoSubtaskVanilla extends Base
 
       if (! empty($subtask)) {
         $subtaskValues = $values;
-        $subtaskValues['title'] = $subtask;
+
+        // *** Parsing for "magical" parameters ... enabling separate values for each subtask ***
+        // Extract subtask-title by ignoring all "magical" parameters
+        $subtaskValues['title'] = preg_replace('~.*?}~', '', $subtask);
+
+        // Extracting optional assignee for this subtask ELSE assignee from form will be used
+        $magic_user_id_exists = preg_match('/{u:(.*?)}/', $subtask, $magic_user_id);
+        $subtaskValues['user_id'] = ($magic_user_id_exists) ? $magic_user_id[1] : $subtaskValues['user_id'];
+
+        // Extracting optional estimated hours for this subtask ELSE estimated hours from form will be used
+        $magic_time_exists = preg_match('/{h:(.*?)}/', $subtask, $magic_time);
+        $subtaskValues['time_estimated'] = ($magic_time_exists) ? $magic_time[1] : $subtaskValues['time_estimated'];
 
         list($valid, $errors) = $this->subtaskValidator->validateCreation($subtaskValues);
 
@@ -95,7 +106,7 @@ class CategoryAutoSubtaskVanilla extends Base
         $subtasksAdded++;
       }
     }
-    //restore the messaging with a flash but this message doesn't seem to appear in the flash area. Only the create message from (kanboard/app/Controller/ActionCreationController.php). 
+    //restore the messaging with a flash but this message doesn't seem to appear in the flash area. Only the create message from (kanboard/app/Controller/ActionCreationController.php).
     if ($subtasksAdded > 0) {
       if ($subtasksAdded === 1) {
         $this->flash->success(t('Subtask added successfully.'));

@@ -62,15 +62,14 @@
             <?= $this->form->textarea('params['.$param_name.']', $values) ?>
             <div class="form-help">
                 <?= t('Enter one line per task, or leave blank to copy Task Title and create only one subtask.') ?><br />
-                <?= t('You can use "magical" parameters on each line to set individual values for Assignee, Estimated Hours and Duration in days for any subtask.') ?><br />
+                <?= t('You can use "magical" parameters on each line to set individual values for Assignee and Estimated Hours for any subtask.') ?><br />
                 <?= t('--> Hover mouse over INFO-icon for help ...') ?><br />
                 <?php
                     $help_tooltip = t('HELP for useage of "magical" parameters:') . '&#10';
                     $help_tooltip .= t('- Prepending a line with {u:19} will assign that subtask to the user with user-id 19') . '&#10';
                     $help_tooltip .= t('- Prepending a line with {h:1.5} will set the estimatedhours for that subtask 1.5 hours') . '&#10';
-                    $help_tooltip .= t('- Prepending a line with {d:7} will set the duration in days for that subtask 7 days') . '&#10';
                     $help_tooltip .= t('-- You can use all combinations of "magical" parameters:') . '&#10';
-                    $help_tooltip .= t('--- None, only the {u:-parameter}, only the {h:-parameter}, only the {d:-parameter}, any 2 of them or all 3!');
+                    $help_tooltip .= t('--- None, only the {u:-parameter}, only the {h:-parameter} or both!');
                 ?>
                 <i class="fa fa-fw fa-info-circle fa-2x aria-hidden="true" title="<?= $help_tooltip; ?>"></i>
             </div>

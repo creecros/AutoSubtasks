@@ -14,16 +14,17 @@ class Plugin extends Base
   public function initialize()
 
   {
-    $this->template->setTemplateOverride('action_creation/params', 'autoSubtasks:action_creation/params');
-    
+
     if (file_exists('plugins/Subtaskdate')) {
+      $this->template->setTemplateOverride('action_creation/params', 'autoSubtasks:action_creation/params');
       $this->actionManager->register(new AutoCreateSubtask($this->container));
       $this->actionManager->register(new CategoryAutoSubtask($this->container));
     } else {
+      $this->template->setTemplateOverride('action_creation/params', 'autoSubtasks:action_creation/params_vanilla');
       $this->actionManager->register(new AutoCreateSubtaskVanilla($this->container));
       $this->actionManager->register(new CategoryAutoSubtaskVanilla($this->container));
     }
-    
+
   }
 
   public function getPluginName()
@@ -40,7 +41,7 @@ class Plugin extends Base
   {
     return '2.1.0';
   }
-  
+
   public function getPluginDescription()
   {
     return 'Adding automatic actions for subtasks';
@@ -50,7 +51,7 @@ class Plugin extends Base
   {
     return 'https://github.com/creecros/AutoSubtasks';
   }
-  
+
   public function getCompatibleVersion()
   {
     return '>=1.0.48';
