@@ -77,14 +77,12 @@ class AutoCreateSubtask extends Base
       }
     }
 
-    foreach ($subtasks as $subtask) {
+    foreach ($subtasks as $_raw_subtask) {
 
-      if (! empty($subtask)) {
+      if (! empty($raw_subtask)) {
         $subtaskValues = $values;
 
-        // *** Parsing for "magical" parameters ... enabling separate values for each subtask ***
-        // Extract subtask-title by ignoring all "magical" parameters
-        $subtaskValues['title'] = preg_replace('~.*?}~', '', $subtask);
+        $subtask = $this->helper->magicalParamsHelper->getCleanSubtaskTitle($raw_subtask);
 
         // Extracting optional assignee for this subtask ELSE assignee from form will be used
         $magic_user_id_exists = preg_match('/{u:(.*?)}/', $subtask, $magic_user_id);

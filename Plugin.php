@@ -14,6 +14,8 @@ class Plugin extends Base
   public function initialize()
 
   {
+      //Helpers
+     $this->helper->register('magicalParamsHelper', '\Kanboard\Plugin\AutoSubtasks\Helper\MagicalParamsHelper');
 
     if (file_exists('plugins/Subtaskdate')) {
       $this->template->setTemplateOverride('action_creation/params', 'autoSubtasks:action_creation/params');
