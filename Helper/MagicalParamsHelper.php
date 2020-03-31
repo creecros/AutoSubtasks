@@ -13,7 +13,7 @@ class MagicalParamsHelper extends Base
         $magical_subtaskValues = $raw_subtaskValues;
 
         // Extract subtask-title by ignoring all "magical" parameters
-        $magical_subtaskValues['title'] = preg_replace('~.*?}~', '', $raw_subtask);
+        $magical_subtaskValues['title'] = preg_replace('/{(.*?)}/', '', $raw_subtask);
 
         // Extract optional assignee for this subtask ELSE assignee from form will be used
         $magic_user_id_exists = preg_match('/{u:(.*?)}/', $raw_subtask, $magic_user_id);
