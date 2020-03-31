@@ -60,23 +60,19 @@ class CategoryAutoSubtaskVanilla extends Base
       'status' => 0,
     );
 
-    $subtasks = array_map('trim', explode("\r\n", isset($values['title']) ? $values['title'] : ''));
+    $raw_subtasks = array_map('trim', explode("\r\n", isset($values['title']) ? $values['title'] : ''));
     $subtasksAdded = 0;
 
     if ($this->getParam('check_box_no_duplicates') == true ){
-      $current_subtasks = $this->subtaskModel->getAll($data['task_id']);
-      foreach ($current_subtasks as $current_subtask) {
-        if (in_array($current_subtask['title'], $subtasks)) {
-          $title = array_search($current_subtask['title'], $subtasks);
-          unset($subtasks[$title]);
-        }
-      }
+        $subtasks = $this->helper->magicalParams->removeDuplicateSubtasks($raw_subtasks, $this->subtaskModel->getAll($data['task_id']));
+    } else {
+        $subtasks = $raw_subtasks;
     }
 
     foreach ($subtasks as $subtask) {
 
       if (! empty($subtask)) {
-        $subtaskValues = $this->helper->magicalParamsHelper->injectMagicalParams($values, $subtask, $data['project_id']);
+        $subtaskValues = $this->helper->magicalParams->injectMagicalParams($values, $subtask, $data['task']['project_id']);
 
         list($valid, $errors) = $this->subtaskValidator->validateCreation($subtaskValues);
 

@@ -4,11 +4,11 @@ namespace Kanboard\Plugin\AutoSubtasks\Helper;
 
 use Kanboard\Core\Base;
 
+// some helpers for AutoSubtasks
 
 class MagicalParamsHelper extends Base
 {
     // Parse for "magical" parameters and if present use them instead of the values from the form (thus enabling individual params per subtask)
-
     public function injectMagicalParams($raw_subtaskValues, $raw_subtask, $project_id)
     {
         $magical_subtaskValues = $raw_subtaskValues;
@@ -32,5 +32,17 @@ class MagicalParamsHelper extends Base
         $magical_subtaskValues['due_date'] = ($magic_days_exist) ? strtotime('+'.$magic_days[1].'days') : $raw_subtaskValues['due_date'];
 
         return $magical_subtaskValues;
+    }
+
+    // For comparison we need to remove magical params to find and remove duplicates
+    public function removeDuplicateSubtasks($raw_subtasks, $current_subtasks)
+    {
+        $current_titles = array_column($current_subtasks, 'title');
+        foreach ($raw_subtasks as $raw_key => $clean_subtask) {
+            $raw_subtasks[$raw_key] = preg_replace('/{(.*?)}/', '', $clean_subtask);
+        }
+
+        $unique_subtasks = array_diff($raw_subtasks, $current_titles);
+        return $unique_subtasks;
     }
 }
