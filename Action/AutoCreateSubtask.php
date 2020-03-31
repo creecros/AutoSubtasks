@@ -81,8 +81,11 @@ class AutoCreateSubtask extends Base
 
       if (! empty($raw_subtask)) {
         $subtaskValues = $values;
+        echo '<pre>DEBUG >> raw_subtask: ' . $raw_subtask . '<br />';
+        print_r($subtaskValues);
+        echo '<hr></pre>';
 
-        $subtask = $this->helper->magicalParamsHelper->getCleanSubtaskTitle($raw_subtask);
+        $subtask = $this->magicalParamsHelper->getCleanSubtaskTitle($raw_subtask);
 
         // Extracting optional assignee for this subtask ELSE assignee from form will be used
         $magic_user_id_exists = preg_match('/{u:(.*?)}/', $subtask, $magic_user_id);
