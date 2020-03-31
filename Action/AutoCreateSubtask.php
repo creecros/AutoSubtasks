@@ -77,27 +77,10 @@ class AutoCreateSubtask extends Base
       }
     }
 
-    foreach ($subtasks as $_raw_subtask) {
+    foreach ($subtasks as $subtask) {
 
-      if (! empty($raw_subtask)) {
-        $subtaskValues = $values;
-        echo '<pre>DEBUG >> raw_subtask: ' . $raw_subtask . '<br />';
-        print_r($subtaskValues);
-        echo '<hr></pre>';
-
-        $subtask = $this->magicalParamsHelper->getCleanSubtaskTitle($raw_subtask);
-
-        // Extracting optional assignee for this subtask ELSE assignee from form will be used
-        $magic_user_id_exists = preg_match('/{u:(.*?)}/', $subtask, $magic_user_id);
-        $subtaskValues['user_id'] = ($magic_user_id_exists) ? $magic_user_id[1] : $subtaskValues['user_id'];
-
-        // Extracting optional estimated hours for this subtask ELSE estimated hours from form will be used
-        $magic_time_exists = preg_match('/{h:(.*?)}/', $subtask, $magic_time);
-        $subtaskValues['time_estimated'] = ($magic_time_exists) ? $magic_time[1] : $subtaskValues['time_estimated'];
-
-        // Extracting optional due date for this subtask ELSE due date from form will be used
-        $magic_days_exist = preg_match('/{d:(.*?)}/', $subtask, $magic_days);
-        $subtaskValues['due_date'] = ($magic_days_exist) ? strtotime('+'.$magic_days[1].'days') : $subtaskValues['due_date'];
+      if (! empty($subtask)) {
+        $subtaskValues = $this->helper->magicalParamsHelper->injectMagicalParams($values, $subtask);
 
         list($valid, $errors) = $this->subtaskValidator->validateCreation($subtaskValues);
 

@@ -4,53 +4,33 @@ namespace Kanboard\Plugin\AutoSubtasks\Helper;
 
 use Kanboard\Core\Base;
 
-/**
- * Magical parameters Helper
- *
- * @package Kanboard\Plugin\AutoSubtasks\Helper
- * @author  Manfred Hoffmann
- */
 class MagicalParamsHelper extends Base
 {
-    /**
-     * Strip off all magical params from subtask-title
-     *
-     * @param  string $raw_subtask
-     * @return string
-     */
-    public function getCleanSubtaskTitle($raw_subtask)
-    {
-        // Extract subtask-title by stripping off all "magical" params
-        $clean_subtask = preg_replace('~.*?}~', '', $subtask);
+    // Parse for "magical" parameters and if present use them instead of the values from the form (thus enabling individual params per subtask)
 
-        return $clean_subtask;
-    }
-
-    /**
-     * Extract Magical Params from
-     *
-     * @param  array
-     * @param  array
-     * @return
-     */
-    public function extractMagicalParams()
+    public function injectMagicalParams($raw_subtaskValues, $raw_subtask)
     {
-        // *** Parsing for "magical" parameters ... enabling separate values for each subtask ***
+        $magical_subtaskValues = $raw_subtaskValues;
+
         // Extract subtask-title by ignoring all "magical" parameters
-        $subtaskValues['title'] = preg_replace('~.*?}~', '', $subtask);
+        $magical_subtaskValues['title'] = preg_replace('~.*?}~', '', $raw_subtask);
 
-        // Extracting optional assignee for this subtask ELSE assignee from form will be used
-        $magic_user_id_exists = preg_match('/{u:(.*?)}/', $subtask, $magic_user_id);
-        $subtaskValues['user_id'] = ($magic_user_id_exists) ? $magic_user_id[1] : $subtaskValues['user_id'];
+        // Extract optional assignee for this subtask ELSE assignee from form will be used
+        $magic_user_id_exists = preg_match('/{u:(.*?)}/', $raw_subtask, $magic_user_id);
+        $magical_subtaskValues['user_id'] = ($magic_user_id_exists) ? $magic_user_id[1] : $raw_subtaskValues['user_id'];
 
-        // Extracting optional estimated hours for this subtask ELSE estimated hours from form will be used
-        $magic_time_exists = preg_match('/{h:(.*?)}/', $subtask, $magic_time);
-        $subtaskValues['time_estimated'] = ($magic_time_exists) ? $magic_time[1] : $subtaskValues['time_estimated'];
+        // Extract optional estimated hours for this subtask ELSE estimated hours from form will be used
+        $magic_time_exists = preg_match('/{h:(.*?)}/', $raw_subtask, $magic_time);
+        $magical_subtaskValues['time_estimated'] = ($magic_time_exists) ? $magic_time[1] : $raw_subtaskValues['time_estimated'];
 
-        // Extracting optional due date for this subtask ELSE due date from form will be used
-        $magic_days_exist = preg_match('/{d:(.*?)}/', $subtask, $magic_days);
-        $subtaskValues['due_date'] = ($magic_days_exist) ? strtotime('+'.$magic_days[1].'days') : $subtaskValues['due_date'];
+        // Extract optional due date for this subtask ELSE due date from form will be used
+        // Skip if parameter is not present (because it will only be there if the Subtaskdate-plugin is active!)
+        if ( array_key_exists('due_date', $raw_subtaskValues) ){
+            echo '<pre>DEBUGGING > Injecting due date ...<pre><br>';
+            $magic_days_exist = preg_match('/{d:(.*?)}/', $raw_subtask, $magic_days);
+            $magical_subtaskValues['due_date'] = ($magic_days_exist) ? strtotime('+'.$magic_days[1].'days') : $raw_subtaskValues['due_date'];
+        }
 
-        return $magical_subtask;
+        return $magical_subtaskValues;
     }
 }

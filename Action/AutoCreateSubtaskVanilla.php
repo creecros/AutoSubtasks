@@ -78,19 +78,7 @@ class AutoCreateSubtaskVanilla extends Base
     foreach ($subtasks as $subtask) {
 
       if (! empty($subtask)) {
-        $subtaskValues = $values;
-
-        // *** Parsing for "magical" parameters ... enabling separate values for each subtask ***
-        // Extract subtask-title by ignoring all "magical" parameters
-        $subtaskValues['title'] = preg_replace('~.*?}~', '', $subtask);
-
-        // Extracting optional assignee for this subtask ELSE assignee from form will be used
-        $magic_user_id_exists = preg_match('/{u:(.*?)}/', $subtask, $magic_user_id);
-        $subtaskValues['user_id'] = ($magic_user_id_exists) ? $magic_user_id[1] : $subtaskValues['user_id'];
-
-        // Extracting optional estimated hours for this subtask ELSE estimated hours from form will be used
-        $magic_time_exists = preg_match('/{h:(.*?)}/', $subtask, $magic_time);
-        $subtaskValues['time_estimated'] = ($magic_time_exists) ? $magic_time[1] : $subtaskValues['time_estimated'];
+        $subtaskValues = $this->helper->magicalParamsHelper->injectMagicalParams($values, $subtask);
 
         list($valid, $errors) = $this->subtaskValidator->validateCreation($subtaskValues);
 
