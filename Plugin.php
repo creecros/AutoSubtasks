@@ -14,17 +14,19 @@ class Plugin extends Base
   public function initialize()
 
   {
-      //Helpers
-     $this->helper->register('magicalParams', '\Kanboard\Plugin\AutoSubtasks\Helper\MagicalParamsHelper');
+    // Helpers
+    $this->helper->register('checkCoworkerPlugins', '\Kanboard\Plugin\AutoSubtasks\Helper\CheckCoworkerPluginsHelper');
+    $this->helper->register('magicalParams', '\Kanboard\Plugin\AutoSubtasks\Helper\MagicalParamsHelper');
+
+    // Templates
+    $this->template->setTemplateOverride('action_creation/params', 'autoSubtasks:action_creation/params');
 
     if (file_exists('plugins/Subtaskdate')) {
-      $this->template->setTemplateOverride('action_creation/params', 'autoSubtasks:action_creation/params');
-      $this->actionManager->register(new AutoCreateSubtask($this->container));
-      $this->actionManager->register(new CategoryAutoSubtask($this->container));
+        $this->actionManager->register(new AutoCreateSubtask($this->container));
+        $this->actionManager->register(new CategoryAutoSubtask($this->container));
     } else {
-      $this->template->setTemplateOverride('action_creation/params', 'autoSubtasks:action_creation/params_vanilla');
-      $this->actionManager->register(new AutoCreateSubtaskVanilla($this->container));
-      $this->actionManager->register(new CategoryAutoSubtaskVanilla($this->container));
+        $this->actionManager->register(new AutoCreateSubtaskVanilla($this->container));
+        $this->actionManager->register(new CategoryAutoSubtaskVanilla($this->container));
     }
 
   }

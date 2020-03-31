@@ -45,4 +45,45 @@ class MagicalParamsHelper extends Base
         $unique_subtasks = array_diff($raw_subtasks, $current_titles);
         return $unique_subtasks;
     }
+
+    // render helptext for multitasktitles-textarea
+    public function renderHelpMultitasktitles()
+    {
+        // feed array for lines of helptext
+        $help_lines = array(
+            t('Enter one line per task, or leave blank to copy Task Title and create only one subtask.'),
+            t('You can use "magical" parameters on each line to set individual values for Assignee, Estimated Hours and Duration in days for any subtask.'),#
+            t('--> Hover mouse over INFO-icon for help ...')
+        );
+
+        // feed array for lines of helptext in mouseover-tooltip
+        $tooltip_linebreak = '&#10';
+        $tooltip_lines = array(
+            t('HELP for useage of "magical" parameters:'),
+            t('- Appending {u:19} to a line will assign that subtask to the user with user-id 19'),
+            t('- Appending {h:1.5} to a line will set the estimatedhours for that subtask to 1.5 hours'),
+            t('- Appending {d:7} to a line will set the duration in days for that subtask tp 7 days'),
+            t('-- You can use all combinations of "magical" parameters:')
+        );
+        // last helpline in tooltip depends on coexistence of Subtaskdate-plugin or vanilla!
+        if ( $this->helper->checkCoworkerPlugins->checkSubtaskdate() ) {
+            $tooltip_lines [] = t('--- None, only the {u:-parameter}, only the {h:-parameter}, only the {d:-parameter}, any 2 of them or all 3!');
+        } else {
+            $tooltip_lines [] = t('--- None, only the {u:-parameter}, only the {h:-parameter} or both!');
+        }
+
+        // let's compose it ...
+        $help_multitasktitles = '';
+        foreach($help_lines as $help_line){
+            $help_multitasktitles .= $help_line . '<br />';
+        }
+        // ... now adding the tooltip ...
+        $help_multitasktitles .= '<i class="fa fa-fw fa-info-circle fa-2x aria-hidden="true" title="';
+        foreach($tooltip_lines as $tooltip_line){
+            $help_multitasktitles .= $tooltip_line . $tooltip_linebreak;
+        }
+        $help_multitasktitles .= '"></i>';
+
+        return $help_multitasktitles;
+    }
 }
