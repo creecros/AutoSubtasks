@@ -24,12 +24,8 @@ class MagicalParamsHelper extends Base
         $magical_subtaskValues['time_estimated'] = ($magic_time_exists) ? $magic_time[1] : $raw_subtaskValues['time_estimated'];
 
         // Extract optional due date for this subtask ELSE due date from form will be used
-        // Skip if parameter is not present (because it will only be there if the Subtaskdate-plugin is active!)
-        if ( array_key_exists('due_date', $raw_subtaskValues) ){
-            echo '<pre>DEBUGGING > Injecting due date ...<pre><br>';
-            $magic_days_exist = preg_match('/{d:(.*?)}/', $raw_subtask, $magic_days);
-            $magical_subtaskValues['due_date'] = ($magic_days_exist) ? strtotime('+'.$magic_days[1].'days') : $raw_subtaskValues['due_date'];
-        }
+        $magic_days_exist = preg_match('/{d:(.*?)}/', $raw_subtask, $magic_days);
+        $magical_subtaskValues['due_date'] = ($magic_days_exist) ? strtotime('+'.$magic_days[1].'days') : $raw_subtaskValues['due_date'];
 
         return $magical_subtaskValues;
     }
