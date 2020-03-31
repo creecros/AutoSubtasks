@@ -80,7 +80,7 @@ class AutoCreateSubtask extends Base
     foreach ($subtasks as $subtask) {
 
       if (! empty($subtask)) {
-        $subtaskValues = $this->helper->magicalParamsHelper->injectMagicalParams($values, $subtask);
+        $subtaskValues = $this->helper->magicalParamsHelper->injectMagicalParams($values, $subtask, $data['project_id']);
 
         list($valid, $errors) = $this->subtaskValidator->validateCreation($subtaskValues);
 
