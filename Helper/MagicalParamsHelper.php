@@ -34,16 +34,30 @@ class MagicalParamsHelper extends Base
         return $magical_subtaskValues;
     }
 
-    // For comparison we need to remove magical params to find and remove duplicates
+    // For comparison we need to temporarily remove magical params to find and remove duplicates
     public function removeDuplicateSubtasks($raw_subtasks, $current_subtasks)
     {
-        $current_titles = array_column($current_subtasks, 'title');
-        foreach ($raw_subtasks as $raw_key => $clean_subtask) {
-            $raw_subtasks[$raw_key] = preg_replace('/{(.*?)}/', '', $clean_subtask);
+        $clean_subtask_titles = array();
+        foreach ($raw_subtasks as $raw_subtask) {
+            $clean_subtask_titles[] = preg_replace('/{(.*?)}/', '', $raw_subtask);
         }
 
-        $unique_subtasks = array_diff($raw_subtasks, $current_titles);
-        return $unique_subtasks;
+        foreach ($current_subtasks as $current_subtask) {
+            if (in_array($current_subtask['title'], $clean_subtask_titles)) {
+                $remove_id = array_search($current_subtask['title'], $clean_subtask_titles);
+                unset($raw_subtasks[$remove_id]);
+            }
+        }
+/*
+        echo '<pre>DEBUGGING : cleaned-titles = ';
+        print_r($clean_subtask_titles);
+        echo '<br> RAW-Subtasks = ';
+        print_r($raw_subtasks);
+//        echo '<hr> CURRENT-Subtasks = ';
+//        print_r($current_subtasks);
+        echo '</pre>';
+*/
+        return $raw_subtasks;
     }
 
     // render helptext for multitasktitles-textarea
