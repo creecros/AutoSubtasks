@@ -57,7 +57,6 @@ class MagicalParamsHelper extends Base
         );
 
         // feed array for lines of helptext in mouseover-tooltip
-        $tooltip_linebreak = '&#10';
         $tooltip_lines = array(
             t('HELP for useage of "magical" parameters:'),
             t('- Appending {u:19} to a line will assign that subtask to the user with user-id 19'),
@@ -78,6 +77,7 @@ class MagicalParamsHelper extends Base
             $help_multitasktitles .= $help_line . '<br />';
         }
         // ... now adding the tooltip ...
+        $tooltip_linebreak = '&#10'; // tested with current versions of chrome and firefox
         $help_multitasktitles .= '<i class="fa fa-fw fa-info-circle fa-2x aria-hidden="true" title="';
         foreach($tooltip_lines as $tooltip_line){
             $help_multitasktitles .= $tooltip_line . $tooltip_linebreak;
