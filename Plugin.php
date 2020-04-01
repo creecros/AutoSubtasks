@@ -4,9 +4,7 @@ namespace Kanboard\Plugin\AutoSubtasks;
 
 use Kanboard\Core\Plugin\Base;
 use Kanboard\Plugin\AutoSubtasks\Action\AutoCreateSubtask;
-use Kanboard\Plugin\AutoSubtasks\Action\AutoCreateSubtaskVanilla;
 use Kanboard\Plugin\AutoSubtasks\Action\CategoryAutoSubtask;
-use Kanboard\Plugin\AutoSubtasks\Action\CategoryAutoSubtaskVanilla;
 
 class Plugin extends Base
 
