@@ -32,7 +32,7 @@
             <?= $this->form->select('params['.$param_name.']', $groupvalues, $values) ?>
         <?php elseif ($this->text->contains($param_name, 'check_box')): ?>
             <?= $this->form->label(t('Options'), $param_name) ?>
-            <?= $this->form->checkbox('params['.$param_name.']', $param_desc, 1) ?>    
+            <?= $this->form->checkbox('params['.$param_name.']', $param_desc, 1) ?>
         <?php elseif ($this->text->contains($param_name, 'project_id')): ?>
             <?= $this->form->label($param_desc, $param_name) ?>
             <?= $this->form->select('params['.$param_name.']', $projects_list, $values) ?>
@@ -61,7 +61,7 @@
             <?= $this->form->label($param_desc, $param_name) ?>
             <?= $this->form->textarea('params['.$param_name.']', $values) ?>
             <div class="form-help">
-            <?= t('Enter one line per task, or leave blank to copy Task Title and create only one subtask.') ?>
+                <?= $this->helper->magicalParams->renderHelpMultitasktitles(); ?>
             </div>
         <?php else: ?>
             <?= $this->form->label($param_desc, $param_name) ?>

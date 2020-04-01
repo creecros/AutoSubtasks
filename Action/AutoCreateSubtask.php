@@ -25,15 +25,26 @@ class AutoCreateSubtask extends Base
   public function getActionRequiredParameters()
   {
     //changed 'titles' to 'multitasktitles' to have a clean way to render the title-textfield as a textarea
-    return array(
-      'column_id' => t('Column'),
-      'user_id' => t('Assignee'),
-      'multitasktitles' => t('Subtask Title(s)'),
-      'time_estimated' => t('Estimated Time in Hours'),
-      'duration' => t('Duration in days'),
-      'check_box_all_columns' => t('Apply to all Columns'),
-      'check_box_no_duplicates' => t('Do not duplicate subtasks'),
-    );
+    if ( $this->helper->checkCoworkerPlugins->checkSubtaskdate() ){
+        return array(
+          'column_id' => t('Column'),
+          'user_id' => t('Assignee'),
+          'multitasktitles' => t('Subtask Title(s)'),
+          'time_estimated' => t('Estimated Time in Hours'),
+          'duration' => t('Duration in days'),
+          'check_box_all_columns' => t('Apply to all Columns'),
+          'check_box_no_duplicates' => t('Do not duplicate subtasks'),
+        );
+    } else {
+        return array(
+          'column_id' => t('Column'),
+          'user_id' => t('Assignee'),
+          'multitasktitles' => t('Subtask Title(s)'),
+          'time_estimated' => t('Estimated Time in Hours'),
+          'check_box_all_columns' => t('Apply to all Columns'),
+          'check_box_no_duplicates' => t('Do not duplicate subtasks'),
+        );
+    }
   }
 
   public function getEventRequiredParameters()
@@ -54,34 +65,40 @@ class AutoCreateSubtask extends Base
     $title_test = $this->getParam('multitasktitles');
     $title_test = preg_replace("/^\s+/m", $data['task']['title'] . "\r\n", $title_test);
 
-    $values = array(
-      'title' => $title_test,
-      'task_id' => $data['task_id'],
-      'user_id' => $this->getParam('user_id'),
-      'time_estimated' => $this->getParam('time_estimated'),
-      'time_spent' => 0,
-      'status' => 0,
-      'due_date' => strtotime('+'.$this->getParam('duration').'days'),
-    );
+    if ( $this->helper->checkCoworkerPlugins->checkSubtaskdate() ){
+        $values = array(
+          'title' => $title_test,
+          'task_id' => $data['task_id'],
+          'user_id' => $this->getParam('user_id'),
+          'time_estimated' => $this->getParam('time_estimated'),
+          'time_spent' => 0,
+          'status' => 0,
+          'due_date' => strtotime('+'.$this->getParam('duration').'days'),
+        );
+    } else {
+        $values = array(
+          'title' => $title_test,
+          'task_id' => $data['task_id'],
+          'user_id' => $this->getParam('user_id'),
+          'time_estimated' => $this->getParam('time_estimated'),
+          'time_spent' => 0,
+          'status' => 0,
+        );
 
-    $subtasks = array_map('trim', explode("\r\n", isset($values['title']) ? $values['title'] : ''));
+    }
+    $raw_subtasks = array_map('trim', explode("\r\n", isset($values['title']) ? $values['title'] : ''));
     $subtasksAdded = 0;
-    
+
     if ($this->getParam('check_box_no_duplicates') == true ){
-      $current_subtasks = $this->subtaskModel->getAll($data['task_id']);
-      foreach ($current_subtasks as $current_subtask) {
-        if (in_array($current_subtask['title'], $subtasks)) {
-          $title = array_search($current_subtask['title'], $subtasks);
-          unset($subtasks[$title]);
-        }
-      }
+        $subtasks = $this->helper->magicalParams->removeDuplicateSubtasks($raw_subtasks, $this->subtaskModel->getAll($data['task_id']));
+    } else {
+        $subtasks = $raw_subtasks;
     }
 
     foreach ($subtasks as $subtask) {
 
       if (! empty($subtask)) {
-        $subtaskValues = $values;
-        $subtaskValues['title'] = $subtask;
+        $subtaskValues = $this->helper->magicalParams->injectMagicalParams($values, $subtask, $data['task']['project_id']);
 
         list($valid, $errors) = $this->subtaskValidator->validateCreation($subtaskValues);
 
@@ -99,7 +116,7 @@ class AutoCreateSubtask extends Base
         $subtasksAdded++;
       }
     }
-    //restore the messaging with a flash but this message doesn't seem to appear in the flash area. Only the create message from (kanboard/app/Controller/ActionCreationController.php). 
+    //restore the messaging with a flash but this message doesn't seem to appear in the flash area. Only the create message from (kanboard/app/Controller/ActionCreationController.php).
     if ($subtasksAdded > 0) {
       if ($subtasksAdded === 1) {
         $this->flash->success(t('Subtask added successfully.'));
@@ -111,7 +128,7 @@ class AutoCreateSubtask extends Base
 
   public function hasRequiredCondition(array $data)
   {
-    
+
     if ($this->getParam('check_box_all_columns')) {
     return $data['task']['column_id'] == $data['task']['column_id'];
     } else {
