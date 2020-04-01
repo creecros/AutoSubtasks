@@ -25,15 +25,26 @@ class AutoCreateSubtask extends Base
   public function getActionRequiredParameters()
   {
     //changed 'titles' to 'multitasktitles' to have a clean way to render the title-textfield as a textarea
-    return array(
-      'column_id' => t('Column'),
-      'user_id' => t('Assignee'),
-      'multitasktitles' => t('Subtask Title(s)'),
-      'time_estimated' => t('Estimated Time in Hours'),
-      'duration' => t('Duration in days'),
-      'check_box_all_columns' => t('Apply to all Columns'),
-      'check_box_no_duplicates' => t('Do not duplicate subtasks'),
-    );
+    if ( $this->helper->checkCoworkerPlugins->checkSubtaskdate() ){
+        return array(
+          'column_id' => t('Column'),
+          'user_id' => t('Assignee'),
+          'multitasktitles' => t('Subtask Title(s)'),
+          'time_estimated' => t('Estimated Time in Hours'),
+          'duration' => t('Duration in days'),
+          'check_box_all_columns' => t('Apply to all Columns'),
+          'check_box_no_duplicates' => t('Do not duplicate subtasks'),
+        );
+    } else {
+        return array(
+          'column_id' => t('Column'),
+          'user_id' => t('Assignee'),
+          'multitasktitles' => t('Subtask Title(s)'),
+          'time_estimated' => t('Estimated Time in Hours'),
+          'check_box_all_columns' => t('Apply to all Columns'),
+          'check_box_no_duplicates' => t('Do not duplicate subtasks'),
+        );
+    }
   }
 
   public function getEventRequiredParameters()
@@ -54,15 +65,27 @@ class AutoCreateSubtask extends Base
     $title_test = $this->getParam('multitasktitles');
     $title_test = preg_replace("/^\s+/m", $data['task']['title'] . "\r\n", $title_test);
 
-    $values = array(
-      'title' => $title_test,
-      'task_id' => $data['task_id'],
-      'user_id' => $this->getParam('user_id'),
-      'time_estimated' => $this->getParam('time_estimated'),
-      'time_spent' => 0,
-      'status' => 0,
-      'due_date' => strtotime('+'.$this->getParam('duration').'days'),
-    );
+    if ( $this->helper->checkCoworkerPlugins->checkSubtaskdate() ){
+        $values = array(
+          'title' => $title_test,
+          'task_id' => $data['task_id'],
+          'user_id' => $this->getParam('user_id'),
+          'time_estimated' => $this->getParam('time_estimated'),
+          'time_spent' => 0,
+          'status' => 0,
+          'due_date' => strtotime('+'.$this->getParam('duration').'days'),
+        );
+    } else {
+        $values = array(
+          'title' => $title_test,
+          'task_id' => $data['task_id'],
+          'user_id' => $this->getParam('user_id'),
+          'time_estimated' => $this->getParam('time_estimated'),
+          'time_spent' => 0,
+          'status' => 0,
+          'due_date' => strtotime('+'.$this->getParam('duration').'days'),
+        );
+    }
 
     $raw_subtasks = array_map('trim', explode("\r\n", isset($values['title']) ? $values['title'] : ''));
     $subtasksAdded = 0;
