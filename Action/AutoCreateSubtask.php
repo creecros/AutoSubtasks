@@ -83,10 +83,9 @@ class AutoCreateSubtask extends Base
           'time_estimated' => $this->getParam('time_estimated'),
           'time_spent' => 0,
           'status' => 0,
-          'due_date' => strtotime('+'.$this->getParam('duration').'days'),
         );
-    }
 
+    }
     $raw_subtasks = array_map('trim', explode("\r\n", isset($values['title']) ? $values['title'] : ''));
     $subtasksAdded = 0;
 

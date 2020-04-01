@@ -34,12 +34,15 @@ class CategoryAutoSubtask extends Base
           'check_box_no_duplicates' => t('Do not duplicate subtasks'),
         );
     } else {
-        'category_id' => t('Category'),
-        'user_id' => t('Assignee'),
-        'multitasktitles' => t('Subtask Title(s)'),
-        'time_estimated' => t('Estimated Time in Hours'),
-        'check_box_no_duplicates' => t('Do not duplicate subtasks'),
+        return array(
+          'category_id' => t('Category'),
+          'user_id' => t('Assignee'),
+          'multitasktitles' => t('Subtask Title(s)'),
+          'time_estimated' => t('Estimated Time in Hours'),
+          'check_box_no_duplicates' => t('Do not duplicate subtasks'),
+        );
     }
+  }   
 
   public function getEventRequiredParameters()
   {
