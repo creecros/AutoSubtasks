@@ -21,13 +21,9 @@ class Plugin extends Base
     // Templates
     $this->template->setTemplateOverride('action_creation/params', 'autoSubtasks:action_creation/params');
 
-    if (file_exists('plugins/Subtaskdate')) {
-        $this->actionManager->register(new AutoCreateSubtask($this->container));
-        $this->actionManager->register(new CategoryAutoSubtask($this->container));
-    } else {
-        $this->actionManager->register(new AutoCreateSubtaskVanilla($this->container));
-        $this->actionManager->register(new CategoryAutoSubtaskVanilla($this->container));
-    }
+    // register actions
+    $this->actionManager->register(new AutoCreateSubtask($this->container));
+    $this->actionManager->register(new CategoryAutoSubtask($this->container));
 
   }
 
