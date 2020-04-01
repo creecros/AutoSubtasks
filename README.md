@@ -13,14 +13,16 @@ Donate to help keep this project maintained.
 <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=SEGNEVQFXHXGW&source=url">
 <img src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif" border="0" name="submit" title="PayPal - The safer, easier way to pay online!" alt="Donate with PayPal button" /></a>
 
-## :star: If you use it, you should star it on Github! 
+## :star: If you use it, you should star it on Github!
 - It's the least you can do for all the work put into it!
 
 # AutoSubtasks
 - Kanboard Plugin to create Automatic Actions for subtasks.
-  1. Automatic Action will allow you to add a subtask when the task is moved to another column or upon Task creation within a column. 
+  1. Automatic Action will allow you to add a subtask when the task is moved to another column or upon Task creation within a column.
   2. Automatic Action will allow you to add a subtask when the tasks category changes.
 - Works with [Subtaskdate](https://github.com/eSkiSo/Subtaskdate) plugin, or without.
+- By (optionally) appending "magical" parameters to each auto-subtask, you can define individual parameters for assignee and estimated hours.
+- If Subtaskdate-plugin is present, you can also use a "magical" parameter, to assign an individual duration.
 
 # Requirements
 - Kanboard >=1.0.48
