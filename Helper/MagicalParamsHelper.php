@@ -28,8 +28,10 @@ class MagicalParamsHelper extends Base
         $magical_subtaskValues['time_estimated'] = ($magic_time_exists) ? $magic_time[1] : $raw_subtaskValues['time_estimated'];
 
         // Extract optional due date for this subtask ELSE due date from form will be used
-        $magic_days_exist = preg_match('/{d:(.*?)}/', $raw_subtask, $magic_days);
-        $magical_subtaskValues['due_date'] = ($magic_days_exist) ? strtotime('+'.$magic_days[1].'days') : $raw_subtaskValues['due_date'];
+        if ( $this->helper->checkCoworkerPlugins->checkSubtaskdate() ) {
+            $magic_days_exist = preg_match('/{d:(.*?)}/', $raw_subtask, $magic_days);
+            $magical_subtaskValues['due_date'] = ($magic_days_exist) ? strtotime('+'.$magic_days[1].'days') : $raw_subtaskValues['due_date'];
+        }
 
         return $magical_subtaskValues;
     }
