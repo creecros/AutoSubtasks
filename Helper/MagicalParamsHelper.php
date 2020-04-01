@@ -76,14 +76,15 @@ class MagicalParamsHelper extends Base
         $tooltip_lines = array(
             t('HELP for useage of "magical" parameters:'),
             t('- Appending {u:19} to a line will assign that subtask to the user with user-id 19'),
-            t('- Appending {h:1.5} to a line will set the estimatedhours for that subtask to 1.5 hours'),
-            t('- Appending {d:7} to a line will set the duration in days for that subtask to 7 days'),
-            t('-- You can use all combinations of "magical" parameters:')
+            t('- Appending {h:1.5} to a line will set the estimatedhours for that subtask to 1.5 hours')
         );
         // last helpline in tooltip depends on coexistence of Subtaskdate-plugin or vanilla!
         if ( $this->helper->checkCoworkerPlugins->checkSubtaskdate() ) {
+            $tooltip_lines [] = t('- Appending {d:7} to a line will set the duration in days for that subtask to 7 days');
+            $tooltip_lines [] = t('-- You can use all combinations of "magical" parameters:');
             $tooltip_lines [] = t('--- None, only the {u:-parameter}, only the {h:-parameter}, only the {d:-parameter}, any 2 of them or all 3!');
         } else {
+            $tooltip_lines [] = t('-- You can use all combinations of "magical" parameters:');
             $tooltip_lines [] = t('--- None, only the {u:-parameter}, only the {h:-parameter} or both!');
         }
 
