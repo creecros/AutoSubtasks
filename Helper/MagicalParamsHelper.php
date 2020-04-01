@@ -50,15 +50,7 @@ class MagicalParamsHelper extends Base
                 unset($raw_subtasks[$remove_id]);
             }
         }
-/*
-        echo '<pre>DEBUGGING : cleaned-titles = ';
-        print_r($clean_subtask_titles);
-        echo '<br> RAW-Subtasks = ';
-        print_r($raw_subtasks);
-//        echo '<hr> CURRENT-Subtasks = ';
-//        print_r($current_subtasks);
-        echo '</pre>';
-*/
+
         return $raw_subtasks;
     }
 
