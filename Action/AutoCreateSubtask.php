@@ -107,6 +107,7 @@ class AutoCreateSubtask extends Base
         $this->flash->success(t('%d subtasks added successfully.', $subtasksAdded));
       }
     }
+    return true;
   }
 
   public function hasRequiredCondition(array $data)
