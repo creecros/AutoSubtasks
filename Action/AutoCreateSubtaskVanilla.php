@@ -105,11 +105,12 @@ class AutoCreateSubtaskVanilla extends Base
         $this->flash->success(t('%d subtasks added successfully.', $subtasksAdded));
       }
     }
+    return true;
   }
 
   public function hasRequiredCondition(array $data)
   {
-    
+
     if ($this->getParam('check_box_all_columns')) {
     return $data['task']['column_id'] == $data['task']['column_id'];
     } else {

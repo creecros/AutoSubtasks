@@ -103,10 +103,11 @@ class CategoryAutoSubtaskVanilla extends Base
         $this->flash->success(t('%d subtasks added successfully.', $subtasksAdded));
       }
     }
+    return true;
   }
 
   public function hasRequiredCondition(array $data)
   {
-        return $data['task']['category_id'] == $this->getParam('category_id');
+    return $data['task']['category_id'] == $this->getParam('category_id');
   }
 }
