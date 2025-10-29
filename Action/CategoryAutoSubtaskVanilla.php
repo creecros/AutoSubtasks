@@ -108,6 +108,6 @@ class CategoryAutoSubtaskVanilla extends Base
 
   public function hasRequiredCondition(array $data)
   {
-        return $data['task']['category_id'] == $this->getParam('category_id');
+    return $data['task']['category_id'] == $this->getParam('category_id');
   }
 }
