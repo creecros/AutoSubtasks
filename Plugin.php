@@ -3,6 +3,7 @@
 namespace Kanboard\Plugin\AutoSubtasks;
 
 use Kanboard\Core\Plugin\Base;
+use Kanboard\Core\Translator;
 use Kanboard\Plugin\AutoSubtasks\Action\AutoCreateSubtask;
 use Kanboard\Plugin\AutoSubtasks\Action\AutoCreateSubtaskVanilla;
 use Kanboard\Plugin\AutoSubtasks\Action\CategoryAutoSubtask;
@@ -15,7 +16,7 @@ class Plugin extends Base
 
   {
     $this->template->setTemplateOverride('action_creation/params', 'autoSubtasks:action_creation/params');
-    
+
     if (file_exists('plugins/Subtaskdate')) {
       $this->actionManager->register(new AutoCreateSubtask($this->container));
       $this->actionManager->register(new CategoryAutoSubtask($this->container));
@@ -23,7 +24,12 @@ class Plugin extends Base
       $this->actionManager->register(new AutoCreateSubtaskVanilla($this->container));
       $this->actionManager->register(new CategoryAutoSubtaskVanilla($this->container));
     }
-    
+
+  }
+
+  public function onStartup() {
+      // load Translation
+      Translator::load($this->languageModel->getCurrentLanguage(), __DIR__ . '/Locale');
   }
 
   public function getPluginName()
@@ -40,17 +46,17 @@ class Plugin extends Base
   {
     return '2.1.0';
   }
-  
+
   public function getPluginDescription()
   {
-    return 'Adding automatic actions for subtasks';
+    return t('Adding automatic actions for subtasks');
   }
 
   public function getPluginHomepage()
   {
     return 'https://github.com/creecros/AutoSubtasks';
   }
-  
+
   public function getCompatibleVersion()
   {
     return '>=1.0.48';
