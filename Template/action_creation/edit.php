@@ -1,18 +1,19 @@
 <div class="page-header">
-    <h2><?= t('Define action parameters') ?></h2>
+    <h2><?= t('Edit action parameters') ?></h2>
 </div>
 
-<form method="post" action="<?= $this->url->href('ActionCreationController', 'save', array('project_id' => $project['id'])) ?>" autocomplete="off">
+<form method="post" action="<?= $this->url->href('SubtaskActionController', 'update', array('plugin' => 'AutoSubtasks', 'project_id' => $project['id'], 'action_id' => $action['id'])) ?>" autocomplete="off">
     <?= $this->form->csrf() ?>
 
-    <?= $this->form->hidden('event_name', $values) ?>
+    <?= $this->form->hidden('action_id', $values) ?>
+    <?= $this->form->hidden('project_id', $values) ?>
     <?= $this->form->hidden('action_name', $values) ?>
 
     <?= $this->form->label(t('Action'), 'action_name') ?>
     <?= $this->form->select('action_name', $available_actions, $values, array(), array('disabled')) ?>
 
     <?= $this->form->label(t('Event'), 'event_name') ?>
-    <?= $this->form->select('event_name', $events, $values, array(), array('disabled')) ?>
+    <?= $this->form->select('event_name', $events, $values) ?>
 
     <?php foreach ($action_params as $param_name => $param_desc): ?>
         <?php if ($this->text->contains($param_name, 'column_id')): ?>
@@ -22,17 +23,11 @@
             <?= $this->form->label($param_desc, $param_name) ?>
             <?= $this->form->select('params['.$param_name.']', $users_list, $values) ?>
         <?php elseif ($this->text->contains($param_name, 'group_id')): ?>
-           <?php $groups = isset($this->model) ? $this->model->projectGroupRoleModel->getGroups($values['project_id']) : $this->container['projectGroupRoleModel']->getGroups($values['project_id']); ?>
-           <?php $groupnames = array_column($groups, 'name'); ?>
-           <?php $groupids = array_column($groups, 'id'); ?>
-           <?php array_unshift($groupnames, t('Unassigned')); ?>
-           <?php array_unshift($groupids, 0); ?>
-           <?php $groupvalues = array_combine($groupids, $groupnames); ?>
             <?= $this->form->label($param_desc, $param_name) ?>
             <?= $this->form->select('params['.$param_name.']', $groupvalues, $values) ?>
         <?php elseif ($this->text->contains($param_name, 'check_box')): ?>
             <?= $this->form->label(t('Options'), $param_name) ?>
-            <?= $this->form->checkbox('params['.$param_name.']', $param_desc, 1) ?>    
+            <?= $this->form->checkbox('params['.$param_name.']', $param_desc, 1, isset($values['params'][$param_name]) && $values['params'][$param_name] == 1) ?>    
         <?php elseif ($this->text->contains($param_name, 'project_id')): ?>
             <?= $this->form->label($param_desc, $param_name) ?>
             <?= $this->form->select('params['.$param_name.']', $projects_list, $values) ?>
