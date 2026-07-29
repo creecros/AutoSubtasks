@@ -15,6 +15,8 @@ class Plugin extends Base
 
   {
     $this->template->setTemplateOverride('action_creation/params', 'autoSubtasks:action_creation/params');
+    $this->template->setTemplateOverride('action/index', 'autoSubtasks:action/index');
+    $this->template->setTemplateOverride('project_action/index', 'autoSubtasks:action/index');
     
     if (file_exists('plugins/Subtaskdate')) {
       $this->actionManager->register(new AutoCreateSubtask($this->container));
